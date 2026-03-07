@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formatura do Arthur | Cardápio </title>
+  <link rel="icon" href="https://cdn-icons-png.freepik.com/512/4067/4067084.png" type="image/png">
+  <meta name="description"
+    content="Cardápio digital de drinks com tema de TI para formatura, visual vibrante, moderno e interativo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-1: #f7fff8;
+      --bg-2: #f4fff7;
+      --bg-3: #fffef6;
+
+      --text: #153126;
+      --muted: #567265;
+
+      --green: #11d66b;
+      --green-2: #3af08a;
+      --yellow: #ffd84c;
+      --yellow-2: #ffe88a;
+      --red: #ff6178;
+      --red-2: #ff8a9b;
+
+      --white: #ffffff;
+      --glass: rgba(255, 255, 255, 0.74);
+      --line: rgba(20, 49, 38, 0.10);
+      --shadow: 0 18px 50px rgba(38, 88, 61, 0.10);
+
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(17, 214, 107, 0.16), transparent 24%),
+        radial-gradient(circle at 86% 12%, rgba(255, 216, 76, 0.20), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(255, 97, 120, 0.14), transparent 32%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      overflow-x: hidden;
+    }
+
+    .bg-layer,
+    .bg-layer::before,
+    .bg-layer::after {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-layer {
+      background-image:
+        linear-gradient(rgba(21, 49, 38, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21, 49, 38, 0.045) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity: 0.72;
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.92), transparent 96%);
+      animation: gridPulse 7s ease-in-out infinite;
+    }
+
+    .bg-layer::before {
+      content: '';
+      background:
+        radial-gradient(circle at 16% 24%, rgba(17, 214, 107, 0.22) 0 3px, transparent 4px),
+        radial-gradient(circle at 74% 20%, rgba(255, 216, 76, 0.26) 0 3px, transparent 4px),
+        radial-gradient(circle at 42% 76%, rgba(255, 97, 120, 0.22) 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 70%, rgba(17, 214, 107, 0.18) 0 2px, transparent 3px);
+      background-size: 220px 220px;
+      animation: floatParticles 18s linear infinite;
+      opacity: 0.85;
+    }
+
+    .bg-layer::after {
+      content: '';
+      background: linear-gradient(120deg, transparent 18%, rgba(255, 255, 255, 0.55) 50%, transparent 82%);
+      transform: translateX(-130%);
+      animation: sweep 11s linear infinite;
+      opacity: 0.55;
+    }
+
+    @keyframes sweep {
+      to {
+        transform: translateX(130%);
+      }
+    }
+
+    @keyframes gridPulse {
+      50% {
+        opacity: 0.92;
+      }
+    }
+
+    @keyframes floatParticles {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-80px);
+      }
+    }
+
+    .app {
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 30px 0 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      margin-bottom: 22px;
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .topbar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg,
+          rgba(17, 214, 107, 0.08),
+          rgba(255, 216, 76, 0.08),
+          rgba(255, 97, 120, 0.08));
+      pointer-events: none;
+    }
+
+    .topbar::after {
+      content: '';
+      position: absolute;
+      inset: auto -10% -40% auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(58, 240, 138, 0.18), transparent 68%);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+
+    .label {
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.12em;
+      font-size: 0.77rem;
+      text-transform: uppercase;
+      color: #b78500;
+    }
+
+    h1 {
+      margin: 12px 0 10px;
+      position: relative;
+      z-index: 1;
+      font-size: clamp(1.55rem, 3.2vw, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #133326;
+    }
+
+    .subtitle {
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      max-width: 740px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .drink-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 18px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      overflow: hidden;
+      transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease,
+        border-color 0.28s ease;
+    }
+
+    .drink-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg,
+          rgba(17, 214, 107, 0.07),
+          rgba(255, 216, 76, 0.08),
+          rgba(255, 97, 120, 0.07));
+      pointer-events: none;
+    }
+
+    .drink-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 28%, rgba(255, 255, 255, 0.45) 48%, transparent 68%);
+      transform: translateX(-130%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .drink-card:hover,
+    .drink-card:focus-visible {
+      transform: translateY(-5px) scale(1.005);
+      box-shadow: 0 22px 56px rgba(38, 88, 61, 0.15);
+      border-color: rgba(17, 214, 107, 0.24);
+      outline: none;
+    }
+
+    .drink-card:hover::after,
+    .drink-card:focus-visible::after {
+      opacity: 1;
+      animation: shimmer 1s linear;
+    }
+
+    @keyframes shimmer {
+      to {
+        transform: translateX(130%);
+      }
+    }
+
+    .emoji {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 2.3rem;
+      background:
+        linear-gradient(135deg,
+          rgba(58, 240, 138, 0.22),
+          rgba(255, 232, 138, 0.36),
+          rgba(255, 138, 155, 0.28));
+      border: 1px solid rgba(20, 49, 38, 0.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 10px 24px rgba(38, 88, 61, 0.08);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 49, 38, 0.08);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #2c6a50;
+    }
+
+    .theme-name {
+      margin: 0 0 5px;
+      font-size: 1.04rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #0f8f47;
+      letter-spacing: -0.01em;
+    }
+
+    .real-name {
+      margin: 0;
+      font-size: 1.24rem;
+      font-weight: 800;
+      color: #17392d;
+      letter-spacing: -0.015em;
+    }
+
+    .mini-ingredients {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.55;
+    }
+
+    .card-hint {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: #b77900;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      background: rgba(18, 40, 29, 0.26);
+      backdrop-filter: blur(12px);
+      padding: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: min(880px, 96vw);
+      display: grid;
+      grid-template-columns: 1fr;
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(20, 49, 38, 0.08);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 30px 80px rgba(38, 88, 61, 0.20);
+      transform: translateY(10px) scale(0.985);
+      transition: transform 0.28s ease;
+    }
+
+    .modal.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-media {
+      padding: 16px;
+      background:
+        linear-gradient(180deg,
+          rgba(247, 255, 248, 1),
+          rgba(255, 252, 241, 1));
+      border-bottom: 1px solid rgba(20, 49, 38, 0.07);
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 1px solid rgba(20, 49, 38, 0.07);
+      box-shadow: 0 10px 28px rgba(38, 88, 61, 0.08);
+    }
+
+    .modal-content {
+      padding: 24px;
+    }
+
+    .modal-title {
+      margin: 10px 0 6px;
+      font-size: 1.46rem;
+      line-height: 1.2;
+      font-family: 'JetBrains Mono', monospace;
+      color: #0f8f47;
+    }
+
+    .modal-real {
+      margin: 0;
+      font-size: 1.26rem;
+      font-weight: 800;
+      color: #17392d;
+      letter-spacing: -0.015em;
+    }
+
+    .modal-list {
+      margin: 16px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 1rem;
+    }
+
+    .modal-description {
+      margin-top: 15px;
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 0.98rem;
+    }
+
+    .close-btn {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      z-index: 3;
+      border: 1px solid rgba(20, 49, 38, 0.10);
+      background: rgba(255, 255, 255, 0.94);
+      color: #17392d;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(38, 88, 61, 0.08);
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.92rem;
+      color: #648172;
+    }
+
+    @media (min-width: 860px) {
+      .modal-card {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .modal-media {
+        border-bottom: 0;
+        border-right: 1px solid rgba(20, 49, 38, 0.07);
+      }
+
+      .modal-image {
+        height: 100%;
+        min-height: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        width: min(94vw, 980px);
+      }
+
+      .topbar {
+        padding: 22px 18px;
+      }
+
+      .drink-card {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .emoji {
+        width: 66px;
+        height: 66px;
+        font-size: 2.05rem;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+    }
+
+    .ig-link {
+      color: #0f8f47;
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 2px solid rgba(17, 214, 107, 0.35);
+      padding-bottom: 2px;
+    }
+
+    .ig-link:hover {
+      border-bottom-color: rgba(17, 214, 107, 0.8);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <main class="app">
+    <header class="topbar">
+      <p class="label">drinks.menu() · Comemoração de Formatura 🎓</p>
+      <h1>🍸 Cardápio de Bebidas Arthur Arash</h1>
+      <p class="subtitle">
+        Clique em um drink para abrir os detalhes, ver a imagem e conferir os ingredientes completos.
+      </p>
+    </header>
+
+    <section class="cards" id="cards" aria-label="Cardápio de bebidas"></section>
+
+    <p class="footer-note"> 
+      <!-- Criado por Arthur Arash Briceño Heidari -->
+       · Coquetelaro:
+      <a class="ig-link" href="https://instagram.com/fabio_drinksdf" target="_blank" rel="noopener noreferrer">
+        @fabio_drinksdf
+      </a>
+    </p>
+  </main>
+
+  <aside class="modal" id="modal" aria-hidden="true">
+    <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="close-btn" id="closeBtn" type="button" aria-label="Fechar detalhes">✕ Fechar</button>
+
+      <div class="modal-media">
+        <img class="modal-image" id="modalImage" src="" alt="Imagem da bebida" />
+      </div>
+
+      <div class="modal-content">
+        <p class="label">drink.details()</p>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-real" id="modalReal"></p>
+        <ul class="modal-list" id="modalIngredients"></ul>
+        <p class="modal-description" id="modalDescription"></p>
+      </div>
+    </article>
+  </aside>
+
+  <script>
+    const drinks = [
+      {
+        emoji: '🍋',
+        codename: 'root.caipi()',
+        realName: 'Caipirinha / Caipiroska / Daiquiri',
+        shortText: 'Limão ou maracujá · gelo · versão clássica',
+        ingredients: ['Limão ou maracujá', 'Açúcar', 'Cachaça, vodca ou rum branco', 'Gelo'],
+        description: 'Um clássico refrescante, perfeito para abrir a comemoração com leveza e energia.',
+        image: 'https://mapadacachaca.com.br/wp-content/uploads/2024/11/Caipirinha-Famigerada-optimized.webp'
+      },
+      {
+        emoji: '🌿',
+        codename: 'mint.deploy()',
+        realName: 'Mojito',
+        shortText: 'Rum branco · hortelã · limão',
+        ingredients: ['Rum branco', 'Limão', 'Açúcar', 'Hortelã', 'Sprite ou água com gás', 'Gelo'],
+        description: 'Refrescante e vibrante, com um perfil leve que combina muito bem com festa de dia.',
+        image: 'https://kitchenswagger.com/wp-content/uploads/2020/07/mojito-recipe_0009_DSC_5509.jpg'
+      },
+      {
+        emoji: '💛',
+        codename: 'passion.commit()',
+        realName: 'Batida de Maracujá',
+        shortText: 'Maracujá · cachaça · toque doce',
+        ingredients: ['Cachaça', 'Maracujá', 'Leite condensado ou açúcar', 'Gelo'],
+        description: 'Cremosa, tropical e marcante, ótima para quem gosta de sabores mais intensos.',
+        image: 'https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_mobile/public/srh_recipes/cbe8fbdd5dd73dd09eb8912d4501b71d.jpeg?itok=vTPyFzy1'
+      },
+      {
+        emoji: '🍍',
+        codename: 'kernel.colada()',
+        realName: 'Piña Colada',
+        shortText: 'Abacaxi · coco · rum branco',
+        ingredients: ['Rum branco', 'Suco de abacaxi', 'Leite de coco', 'Leite condensado opcional', 'Gelo'],
+        description: 'Um drink tropical, suave e elegante, com clima de verão e celebração.',
+        image: 'https://m.media-amazon.com/images/I/710KvvfKVsL.jpg'
+      },
+      {
+        emoji: '🩷',
+        codename: 'pink.packet()',
+        realName: 'Pink Lemon',
+        shortText: 'Limão · grenadine · toque gaseificado',
+        ingredients: ['Vodca ou rum', 'Suco de limão', 'Grenadine', 'Sprite ou água com gás', 'Gelo'],
+        description: 'Colorido, delicado e divertido, com um visual lindo para o clima da festa.',
+        image: 'https://www.absolutdrinks.com/cdn-cgi/image/fit=cover,format=auto,height=414,quality=55,width=414/wp-content/uploads/drink_pink-lemonade_16x9.png'
+      },
+      {
+        emoji: '🍊',
+        codename: 'sunset.compile()',
+        realName: 'Vodca com Suco de Laranja',
+        shortText: 'Laranja · vodca · efeito sunset',
+        ingredients: ['Vodca', 'Suco de laranja', 'Grenadine', 'Suco de limão', 'Gelo'],
+        description: 'Leve, cítrico e vibrante, com um visual bonito que combina com a energia da formatura.',
+        image: 'https://heybairtender.s3.amazonaws.com/recipes/caribbean-sunset5543_TITAN.png'
+      }
+    ];
+
+    const cardsEl = document.getElementById('cards');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalReal = document.getElementById('modalReal');
+    const modalImage = document.getElementById('modalImage');
+    const modalIngredients = document.getElementById('modalIngredients');
+    const modalDescription = document.getElementById('modalDescription');
+    const closeBtn = document.getElementById('closeBtn');
+
+    function openModal(drink) {
+      modalTitle.textContent = drink.codename;
+      modalReal.textContent = drink.realName;
+      modalImage.src = drink.image;
+      modalImage.alt = `Imagem do drink ${drink.realName}`;
+      modalIngredients.innerHTML = drink.ingredients.map(item => `<li>${item}</li>`).join('');
+      modalDescription.textContent = drink.description;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    drinks.forEach((drink, index) => {
+      const card = document.createElement('article');
+      card.className = 'drink-card';
+      card.tabIndex = 0;
+
+      card.innerHTML = `
+        <div class="emoji">${drink.emoji}</div>
+        <div class="card-main">
+          <span class="badge">#drink_${String(index + 1).padStart(2, '0')} · online</span>
+          <h2 class="theme-name">${drink.codename}</h2>
+          <p class="real-name">${drink.realName}</p>
+          <p class="mini-ingredients">${drink.shortText}</p>
+          <div class="card-hint">Clique para abrir os detalhes</div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => openModal(drink));
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openModal(drink);
+        }
+      });
+
+      cardsEl.appendChild(card);
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -353,7 +353,9 @@
     }
 
     .modal-card {
-      width: min(660px, 96vw);
+      /* width: min(660px, calc(100vw - 30px)); */
+      /* garante folga nas laterais */
+      max-width: 660px;
       display: grid;
       grid-template-columns: 1fr;
       position: relative;
@@ -516,9 +518,9 @@
 
     <section class="cards" id="cards" aria-label="Cardápio de bebidas"></section>
 
-    <p class="footer-note"> 
+    <p class="footer-note">
       <!-- Criado por Arthur Arash Briceño Heidari -->
-       · Coquetelaro:
+      · Coquetelaro:
       <a class="ig-link" href="https://instagram.com/fabio_drinksdf" target="_blank" rel="noopener noreferrer">
         @fabio_drinksdf
       </a>

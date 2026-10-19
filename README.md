@@ -43,12 +43,29 @@ Cardápio digital de drinks com tema de TI, feito para a comemoração de format
 
 ## 🛠️ Tecnologias
 
-- HTML, CSS e JavaScript puros, em um único arquivo (`index.html`), com as fotos dos drinks na pasta `img/`
+- HTML, CSS e JavaScript puros, sem build, organizados em arquivos separados (veja "Estrutura")
 - [GSAP 3](https://gsap.com/) + ScrollTrigger (via CDN) para as animações
 - [Three.js](https://threejs.org/) (via CDN, carregado depois do site) para os objetos 3D
 - Web Audio API para os sons
 - Fontes [Inter](https://fonts.google.com/specimen/Inter) e [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)
 - Hospedado no GitHub Pages com domínio próprio (`CNAME`)
+
+## 📁 Estrutura
+
+```
+├── index.html        # cardápio
+├── lab.html          # Lab do Bartender
+├── css/
+│   ├── index.css     # estilos do cardápio
+│   └── lab.css       # estilos do lab
+├── js/
+│   ├── index.js      # drinks, filtros, GSAP, quiz, sons e cena 3D
+│   └── lab.js        # montagem do drink, copo animado e receita
+├── img/              # fotos dos drinks
+└── CNAME             # domínio do GitHub Pages
+```
+
+O pequeno script que aplica o tema (claro/escuro) continua dentro do `<head>` de cada HTML de propósito: ele roda antes da página aparecer e evita o "piscar" de cor.
 
 ## ▶️ Como rodar
 
@@ -61,7 +78,7 @@ python3 -m http.server 8000
 
 ## ➕ Como adicionar um drink
 
-No `index.html`, adicione um objeto ao array `drinks`:
+No `js/index.js`, adicione um objeto ao array `drinks`:
 
 ```js
 {

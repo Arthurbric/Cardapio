@@ -158,10 +158,214 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: 10;
       pointer-events: none;
       opacity: 0;
       transition: opacity 1s ease;
+    }
+
+    html.no-3d #scene {
+      display: none;
+    }
+
+    body.over-3d {
+      cursor: pointer;
+    }
+
+    .fab {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--green), #0fb85a);
+      color: #fff;
+      font: 800 0.95rem 'Inter', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(17, 214, 107, 0.45);
+    }
+
+    .fab:focus-visible,
+    .quiz-opt:focus-visible,
+    .quiz-btn:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 2px;
+    }
+
+    .fab span {
+      font-size: 1.25rem;
+    }
+
+    .quiz {
+      position: fixed;
+      inset: 0;
+      z-index: 45;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: var(--overlay);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .quiz.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .quiz-card {
+      position: relative;
+      width: min(520px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      padding: 26px 24px 24px;
+      border-radius: 28px;
+      border: 3px solid var(--line);
+      background: var(--modal-bg);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--strong);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .quiz-bar {
+      height: 6px;
+      margin: 6px 44px 18px 0;
+      border-radius: 99px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .quiz-bar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+    }
+
+    .quiz-step {
+      margin: 0;
+      font: 700 0.78rem 'JetBrains Mono', monospace;
+      color: var(--label);
+    }
+
+    .quiz-q {
+      margin: 8px 0 16px;
+      font-size: 1.35rem;
+      line-height: 1.25;
+      color: var(--heading);
+    }
+
+    .quiz-opts {
+      display: grid;
+      gap: 10px;
+    }
+
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--strong);
+      font: 700 1rem 'Inter', sans-serif;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .quiz-opt:hover {
+      border-color: var(--green);
+      background: rgba(17, 214, 107, 0.1);
+    }
+
+    .quiz-opt span {
+      font-size: 1.4rem;
+    }
+
+    .quiz-result {
+      text-align: center;
+    }
+
+    .quiz-emoji {
+      display: inline-grid;
+      place-items: center;
+      width: 96px;
+      height: 96px;
+      margin: 4px 0 8px;
+      border-radius: 28px;
+      background: var(--emoji-bg);
+      border: 1px solid var(--line);
+      font-size: 3.2rem;
+    }
+
+    .quiz-result h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--heading);
+    }
+
+    .quiz-result .quiz-code {
+      margin: 4px 0 10px;
+      font: 700 0.95rem 'JetBrains Mono', monospace;
+      color: var(--accent);
+    }
+
+    .quiz-result p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .quiz-btn {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--strong);
+      font: 800 0.95rem 'Inter', sans-serif;
+      cursor: pointer;
+    }
+
+    .quiz-btn.primary {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+
+    .quiz-alt {
+      margin-top: 14px;
+      font-size: 0.9rem;
     }
 
     #scene.ready {
@@ -219,7 +423,7 @@
     .app {
       width: min(980px, 92vw);
       margin: 0 auto;
-      padding: 30px 0 60px;
+      padding: 30px 0 100px;
       position: relative;
       z-index: 1;
     }
@@ -651,6 +855,7 @@
   <canvas id="scene" aria-hidden="true"></canvas>
 
   <div class="controls">
+    <button class="ctl" id="sceneBtn" type="button" aria-pressed="true" aria-label="Esconder objetos 3D">🧊</button>
     <button class="ctl" id="soundBtn" type="button" aria-pressed="true" aria-label="Desligar sons">🔊</button>
     <button class="ctl" id="themeBtn" type="button" aria-label="Alternar modo claro e escuro">🌙</button>
   </div>
@@ -690,6 +895,17 @@
     </p>
   </main>
 
+  <button class="fab" id="quizBtn" type="button" aria-haspopup="dialog"><span aria-hidden="true">🍹</span> Qual drink pra mim?</button>
+
+  <aside class="quiz" id="quiz" aria-hidden="true">
+    <article class="quiz-card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+      <button class="quiz-close" id="quizClose" type="button" aria-label="Fechar quiz">✕</button>
+      <h2 id="quizTitle" hidden>Quiz: qual drink pra mim</h2>
+      <div class="quiz-bar" aria-hidden="true"><i id="quizBar"></i></div>
+      <div id="quizBody"></div>
+    </article>
+  </aside>
+
   <aside class="modal" id="modal" aria-hidden="true">
     <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="close-btn" id="closeBtn" type="button" aria-label="Fechar detalhes">✕ Fechar</button>
@@ -720,7 +936,7 @@
         shortText: 'Limão ou maracujá · gelo · versão clássica',
         ingredients: ['Limão ou maracujá', 'Açúcar', 'Cachaça, vodca ou rum branco', 'Gelo'],
         description: 'Um clássico refrescante, perfeito para abrir a comemoração com leveza e energia.',
-        image: 'https://mapadacachaca.com.br/wp-content/uploads/2024/11/Caipirinha-Famigerada-optimized.webp'
+        image: 'img/caipirinha.webp'
       },
       {
         emoji: '🌿', bases: ['rum'],
@@ -729,7 +945,7 @@
         shortText: 'Rum branco · hortelã · limão',
         ingredients: ['Rum branco', 'Limão', 'Açúcar', 'Hortelã', 'Sprite ou água com gás', 'Gelo'],
         description: 'Refrescante e vibrante, com um perfil leve que combina muito bem com festa de dia.',
-        image: 'https://kitchenswagger.com/wp-content/uploads/2020/07/mojito-recipe_0009_DSC_5509.jpg'
+        image: 'img/mojito.jpg'
       },
       {
         emoji: '💛', bases: ['cachaça'],
@@ -738,7 +954,7 @@
         shortText: 'Maracujá · cachaça · toque doce',
         ingredients: ['Cachaça', 'Maracujá', 'Leite condensado ou açúcar', 'Gelo'],
         description: 'Cremosa, tropical e marcante, ótima para quem gosta de sabores mais intensos.',
-        image: 'https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_mobile/public/srh_recipes/cbe8fbdd5dd73dd09eb8912d4501b71d.jpeg?itok=vTPyFzy1'
+        image: 'img/batida-maracuja.jpg'
       },
       {
         emoji: '🍍', bases: ['rum'],
@@ -747,7 +963,7 @@
         shortText: 'Abacaxi · coco · rum branco',
         ingredients: ['Rum branco', 'Suco de abacaxi', 'Leite de coco', 'Leite condensado opcional', 'Gelo'],
         description: 'Um drink tropical, suave e elegante, com clima de verão e celebração.',
-        image: 'https://m.media-amazon.com/images/I/710KvvfKVsL.jpg'
+        image: 'img/pina-colada.jpg'
       },
       {
         emoji: '🩷', bases: ['vodca', 'rum'],
@@ -756,7 +972,8 @@
         shortText: 'Limão · grenadine · toque gaseificado',
         ingredients: ['Vodca ou rum', 'Suco de limão', 'Grenadine', 'Sprite ou água com gás', 'Gelo'],
         description: 'Colorido, delicado e divertido, com um visual lindo para o clima da festa.',
-        image: 'https://www.absolutdrinks.com/cdn-cgi/image/fit=cover,format=auto,height=414,quality=55,width=414/wp-content/uploads/drink_pink-lemonade_16x9.png'
+        image: 'img/pink-lemon.jpg',
+        imagePos: '68% 30%'
       },
       {
         emoji: '🍊', bases: ['vodca'],
@@ -765,7 +982,7 @@
         shortText: 'Laranja · vodca · efeito sunset',
         ingredients: ['Vodca', 'Suco de laranja', 'Grenadine', 'Suco de limão', 'Gelo'],
         description: 'Leve, cítrico e vibrante, com um visual bonito que combina com a energia da formatura.',
-        image: 'https://heybairtender.s3.amazonaws.com/recipes/caribbean-sunset5543_TITAN.png'
+        image: 'img/vodca-laranja.png'
       }
     ];
     const $ = (sel) => document.querySelector(sel);
@@ -788,6 +1005,7 @@
     const countEl = $('#count');
     const themeBtn = $('#themeBtn');
     const soundBtn = $('#soundBtn');
+    const sceneBtn = $('#sceneBtn');
     const metaTheme = $('#metaTheme');
 
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -800,6 +1018,8 @@
 
     let soundOn = store.get('sound') !== 'off';
     let scene3d = null;
+    let sceneOn = store.get('scene3d') !== 'off';
+    root.classList.toggle('no-3d', !sceneOn);
     let lastCard = null;
 
     // ===== Tema claro / escuro =====
@@ -844,8 +1064,15 @@
       if (motion) gsap.fromTo(themeBtn, { rotation: -180 }, { rotation: 0, duration: 0.6, ease: 'back.out(1.7)' });
     });
 
+    function updateSceneUI() {
+      sceneBtn.textContent = sceneOn ? '🧊' : '🚫';
+      sceneBtn.setAttribute('aria-pressed', String(sceneOn));
+      sceneBtn.setAttribute('aria-label', sceneOn ? 'Esconder objetos 3D' : 'Mostrar objetos 3D');
+    }
+
     updateThemeUI();
     updateSoundUI();
+    updateSceneUI();
 
     // ===== Modal =====
     function openModal(drink, card) {
@@ -854,6 +1081,7 @@
       modalReal.textContent = drink.realName;
       modalBase.textContent = 'base: ' + drink.bases.join(' / ');
       modalImage.src = drink.image;
+      modalImage.style.objectPosition = drink.imagePos || '50% 50%';
       modalImage.alt = `Imagem do drink ${drink.realName}`;
       modalIngredients.innerHTML = drink.ingredients.map(item => `<li>${item}</li>`).join('');
       modalDescription.textContent = drink.description;
@@ -1000,6 +1228,139 @@
         }
       });
     }
+    // ===== Quiz: qual drink pra mim? =====
+    const quizEl = $('#quiz');
+    const quizBody = $('#quizBody');
+    const quizBar = $('#quizBar');
+    const quizBtn = $('#quizBtn');
+    const quizClose = $('#quizClose');
+
+    const quizTags = {
+      'root.caipi()': { vibe: ['fresh', 'strong'], flavor: ['citrus', 'tropical'], sweet: 2, why: 'Clássico, cítrico e refrescante. Dá para pedir com cachaça, vodca ou rum.' },
+      'mint.deploy()': { vibe: ['fresh'], flavor: ['mint', 'citrus'], sweet: 2, why: 'Leve e vibrante, com hortelã e limão. Perfeito para quem quer algo refrescante.' },
+      'passion.commit()': { vibe: ['creamy', 'strong'], flavor: ['tropical'], sweet: 3, why: 'Cremosa e marcante, com o sabor intenso do maracujá.' },
+      'kernel.colada()': { vibe: ['creamy'], flavor: ['tropical'], sweet: 3, why: 'Suave e tropical, com abacaxi e coco. Clima de verão no copo.' },
+      'pink.packet()': { vibe: ['fun'], flavor: ['sweetfruit', 'citrus'], sweet: 2, why: 'Colorido e divertido, com limão, grenadine e um toque gaseificado.' },
+      'sunset.compile()': { vibe: ['fun', 'strong'], flavor: ['citrus', 'sweetfruit'], sweet: 2, why: 'Cítrico e vibrante, com um visual de pôr do sol que rouba a cena.' }
+    };
+
+    const questions = [
+      { q: 'Qual vibe você quer agora?', key: 'vibe', opts: [['🧊', 'Refrescante e leve', 'fresh'], ['🥥', 'Doce e cremoso', 'creamy'], ['🔥', 'Forte e marcante', 'strong'], ['🎉', 'Colorido e divertido', 'fun']] },
+      { q: 'Que sabor te atrai mais?', key: 'flavor', opts: [['🍋', 'Cítrico (limão, laranja)', 'citrus'], ['🍍', 'Tropical (abacaxi, maracujá, coco)', 'tropical'], ['🌿', 'Menta e ervas', 'mint'], ['🍒', 'Frutado e doce (grenadine)', 'sweetfruit']] },
+      { q: 'Tem preferência de bebida base?', key: 'base', opts: [['🥃', 'Cachaça', 'cachaça'], ['🍸', 'Vodca', 'vodca'], ['🏝️', 'Rum', 'rum'], ['🤷', 'Tanto faz', 'any']] },
+      { q: 'Quão doce você curte?', key: 'sweet', opts: [['🍃', 'Pouco doce', 1], ['⚖️', 'Equilibrado', 2], ['🍯', 'Bem doce', 3]] }
+    ];
+
+    let qi = 0;
+    let answers = {};
+    let fabPulse = null;
+
+    function rankDrinks() {
+      return drinks.map(d => {
+        const t = quizTags[d.codename];
+        let s = 0;
+        if (t.vibe.includes(answers.vibe)) s += 3;
+        if (t.flavor.includes(answers.flavor)) s += 3;
+        if (answers.base !== 'any' && d.bases.includes(answers.base)) s += 2;
+        s += 2 - Math.abs(t.sweet - answers.sweet);
+        return { d, t, s };
+      }).sort((a, b) => b.s - a.s);
+    }
+
+    function setQuizBar(pct) {
+      if (motion) gsap.to(quizBar, { width: pct + '%', duration: 0.4, ease: 'power2.out' });
+      else quizBar.style.width = pct + '%';
+    }
+
+    function renderQuestion() {
+      const item = questions[qi];
+      setQuizBar((qi / questions.length) * 100);
+      quizBody.innerHTML = `
+        <p class="quiz-step">pergunta ${qi + 1}/${questions.length}</p>
+        <h3 class="quiz-q">${item.q}</h3>
+        <div class="quiz-opts">
+          ${item.opts.map((o, i) => `<button class="quiz-opt" type="button" data-i="${i}"><span aria-hidden="true">${o[0]}</span>${o[1]}</button>`).join('')}
+        </div>`;
+      if (motion) {
+        gsap.from(quizBody.querySelectorAll('.quiz-step, .quiz-q'), { y: 12, opacity: 0, stagger: 0.08, duration: 0.35, ease: 'power3.out' });
+        gsap.from(quizBody.querySelectorAll('.quiz-opt'), { x: 24, opacity: 0, stagger: 0.07, duration: 0.4, delay: 0.1, ease: 'power3.out', clearProps: 'transform,opacity' });
+      }
+    }
+
+    function renderResult() {
+      setQuizBar(100);
+      const [top, alt] = rankDrinks();
+      const d = top.d;
+      quizBody.innerHTML = `
+        <div class="quiz-result">
+          <p class="quiz-step">seu drink ideal</p>
+          <div class="quiz-emoji" id="quizEmoji">${d.emoji}</div>
+          <h3>${d.realName}</h3>
+          <p class="quiz-code">${d.codename}</p>
+          <p>${top.t.why}</p>
+          <p><b>Base:</b> ${d.bases.join(' / ')}</p>
+          <p class="quiz-alt">Também combina com você: <b>${alt.d.emoji} ${alt.d.realName}</b></p>
+          <div class="quiz-actions">
+            <button class="quiz-btn primary" type="button" data-act="details">Ver ingredientes</button>
+            <button class="quiz-btn" type="button" data-act="again">Refazer</button>
+          </div>
+        </div>`;
+      sfx.clink();
+      quizBody.querySelector('[data-act="details"]').addEventListener('click', () => {
+        closeQuiz(true);
+        openModal(d, cardEls[drinks.indexOf(d)]);
+      });
+      quizBody.querySelector('[data-act="again"]').addEventListener('click', () => {
+        sfx.pop();
+        qi = 0;
+        answers = {};
+        renderQuestion();
+      });
+      if (motion) {
+        gsap.from('#quizEmoji', { scale: 0, rotation: -25, duration: 0.9, ease: 'elastic.out(1, 0.5)' });
+        gsap.from(quizBody.querySelectorAll('.quiz-result > :not(.quiz-emoji)'), { y: 14, opacity: 0, stagger: 0.07, duration: 0.4, delay: 0.15, ease: 'power3.out' });
+      }
+    }
+
+    function openQuiz() {
+      qi = 0;
+      answers = {};
+      quizEl.classList.add('open');
+      quizEl.setAttribute('aria-hidden', 'false');
+      sfx.pop();
+      renderQuestion();
+      if (fabPulse) { fabPulse.kill(); fabPulse = null; gsap.set(quizBtn, { scale: 1 }); }
+      quizBody.querySelector('.quiz-opt').focus({ preventScroll: true });
+    }
+
+    function closeQuiz(silent) {
+      quizEl.classList.remove('open');
+      quizEl.setAttribute('aria-hidden', 'true');
+      if (!silent) { sfx.close(); quizBtn.focus({ preventScroll: true }); }
+    }
+
+    quizBtn.addEventListener('click', openQuiz);
+    quizClose.addEventListener('click', () => closeQuiz());
+    quizEl.addEventListener('click', (e) => { if (e.target === quizEl) closeQuiz(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && quizEl.classList.contains('open')) closeQuiz();
+    });
+    quizBody.addEventListener('click', (e) => {
+      const btn = e.target.closest('.quiz-opt');
+      if (!btn) return;
+      const item = questions[qi];
+      answers[item.key] = item.opts[Number(btn.dataset.i)][2];
+      sfx.tick();
+      qi++;
+      if (qi < questions.length) renderQuestion();
+      else renderResult();
+    });
+
+    if (motion) {
+      gsap.from(quizBtn, { scale: 0, duration: 0.8, delay: 1.4, ease: 'back.out(2.5)' });
+      fabPulse = gsap.to(quizBtn, { scale: 1.06, duration: 0.9, delay: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    }
+
     // ===== Sons (Web Audio, sem arquivos) =====
     let actx = null, master = null, lastHover = 0;
 
@@ -1068,6 +1429,17 @@
       updateSoundUI();
       if (soundOn) sfx.pop();
     });
+    sceneBtn.addEventListener('click', () => {
+      sceneOn = !sceneOn;
+      store.set('scene3d', sceneOn ? 'on' : 'off');
+      root.classList.toggle('no-3d', !sceneOn);
+      document.body.classList.remove('over-3d');
+      updateSceneUI();
+      if (scene3d) scene3d.setEnabled(sceneOn);
+      else if (sceneOn) boot3D();
+      if (sceneOn) sfx.pop();
+    });
+
     // ===== Cena 3D (Three.js, carregado depois do site) =====
     function createScene() {
       const canvas = $('#scene');
@@ -1106,6 +1478,12 @@
       const stemMat = new M.MeshStandardMaterial({ color: 0x5b3b1f, roughness: 0.8 });
       const bubbleMat = new M.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.25, roughness: 0, clearcoat: 1 });
       const strawMat = new M.MeshStandardMaterial({ color: 0xff6178, roughness: 0.4 });
+      const orangeMat = new M.MeshStandardMaterial({ color: 0xff9a1f, roughness: 0.5 });
+      const orangeInMat = new M.MeshStandardMaterial({ color: 0xffd27a, roughness: 0.6 });
+      const mintMat = new M.MeshStandardMaterial({ color: 0x2fbf5a, roughness: 0.55, side: M.DoubleSide });
+      const umbrellaMat = new M.MeshStandardMaterial({ color: 0xff6178, roughness: 0.5, side: M.DoubleSide });
+      const sparkleMat = new M.MeshStandardMaterial({ color: 0xffd84c, emissive: 0xffa600, emissiveIntensity: 0.5, roughness: 0.3 });
+      const edgeMat = new M.LineBasicMaterial({ color: 0x2c6a50, transparent: true, opacity: 0.55 });
 
       // Taça de martini
       const glass = new M.Group();
@@ -1135,8 +1513,48 @@
       const ballGeo = new M.SphereGeometry(1, 20, 14);
       const stemGeo = new M.CylinderGeometry(0.02, 0.02, 0.6, 6);
 
+      const edgesGeo = new M.EdgesGeometry(boxGeo);
+      const umbrellaGeo = new M.ConeGeometry(0.7, 0.45, 14, 1, true);
+      const stickGeo = new M.CylinderGeometry(0.03, 0.03, 1.1, 6);
+      const sparkleGeo = new M.OctahedronGeometry(1, 0);
+
       const makers = {
-        ice() { return new M.Mesh(boxGeo, iceMat); },
+        ice() {
+          const m = new M.Mesh(boxGeo, iceMat);
+          m.add(new M.LineSegments(edgesGeo, edgeMat));
+          return m;
+        },
+        orange() {
+          const g = new M.Group();
+          g.add(new M.Mesh(discGeo, orangeMat), new M.Mesh(discInGeo, orangeInMat));
+          return g;
+        },
+        mint() {
+          const g = new M.Group();
+          [[0, 0.5, 0], [0.45, -0.2, 0.9], [-0.45, -0.2, -0.9]].forEach(([x, y, r]) => {
+            const leaf = new M.Mesh(ballGeo, mintMat);
+            leaf.scale.set(0.55, 0.1, 0.32);
+            leaf.position.set(x * 0.6, y * 0.4, 0);
+            leaf.rotation.z = r;
+            g.add(leaf);
+          });
+          return g;
+        },
+        umbrella() {
+          const g = new M.Group();
+          g.add(new M.Mesh(umbrellaGeo, umbrellaMat));
+          const st = new M.Mesh(stickGeo, stemMat);
+          st.position.y = -0.4;
+          g.add(st);
+          return g;
+        },
+        sparkle() {
+          const g = new M.Group();
+          const m = new M.Mesh(sparkleGeo, sparkleMat);
+          m.scale.set(0.55, 0.85, 0.55);
+          g.add(m);
+          return g;
+        },
         lime() {
           const g = new M.Group();
           g.add(new M.Mesh(discGeo, limeMat), new M.Mesh(discInGeo, limeInMat));
@@ -1157,20 +1575,21 @@
 
       const group = new M.Group();
       scene.add(group);
-      const kinds = ['ice', 'lime', 'cherry', 'bubble'];
-      const count = innerWidth < 640 ? 8 : 14;
+      const kinds = ['ice', 'lime', 'cherry', 'bubble', 'orange', 'mint', 'umbrella', 'sparkle'];
+      const count = innerWidth < 640 ? 12 : 22;
       const floaters = [];
       for (let i = 0; i < count; i++) {
         const kind = kinds[i % kinds.length];
         const mesh = makers[kind]();
-        const base = kind === 'bubble' ? 0.25 + Math.random() * 0.3 : 0.6 + Math.random() * 0.5;
+        const mid = Math.random() < 0.4;
+        const base = (kind === 'bubble' ? 0.25 + Math.random() * 0.3 : 0.55 + Math.random() * 0.45) * (mid ? 0.75 : 1);
         mesh.userData.kind = kind;
         mesh.userData.base = base;
         mesh.scale.setScalar(base);
         mesh.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
         group.add(mesh);
         floaters.push({
-          mesh, kind, base,
+          mesh, kind, base, mid,
           u: Math.random(), z: -4 + Math.random() * 5, jitter: Math.random() - 0.5,
           rx: (Math.random() - 0.5) * 0.8, ry: (Math.random() - 0.5) * 0.8,
           sp: 0.5 + Math.random() * 0.8, ph: Math.random() * 6.28,
@@ -1199,7 +1618,9 @@
 
         floaters.forEach((f, i) => {
           const side = i % 2 ? 1 : -1;
-          f.x = side * (visW / 2) * (lo + f.u * (1.08 - lo));
+          const from = f.mid ? 0.12 : lo;
+          const to = f.mid ? Math.max(0.55, lo - 0.1) : 1.08;
+          f.x = side * (visW / 2) * (from + f.u * (to - from));
           f.y = visH * 0.5 - (i / floaters.length) * (visH + travel) - f.jitter * visH * 0.1;
           f.mesh.position.set(f.x, f.y, f.z);
           f.mesh.scale.setScalar(f.base * (small ? 0.8 : 1));
@@ -1243,8 +1664,9 @@
         update(dt, now / 1000);
         renderer.render(scene, camera);
       }
+      let enabled = true;
       function start() {
-        if (running || reduced) return;
+        if (running || reduced || !enabled) return;
         running = true;
         last = performance.now();
         raf = requestAnimationFrame(frame);
@@ -1266,11 +1688,21 @@
         key.intensity = dark ? 1.0 : 0.9;
         greenLight.intensity = dark ? 1.3 : 0.35;
         redLight.intensity = dark ? 1.3 : 0.35;
-        iceMat.color.set(dark ? 0x9fdcff : 0xcdeeff);
-        iceMat.opacity = dark ? 0.5 : 0.55;
-        glassMat.opacity = dark ? 0.22 : 0.3;
-        bubbleMat.opacity = dark ? 0.2 : 0.25;
+        iceMat.color.set(dark ? 0x9fdcff : 0x7cc4ee);
+        iceMat.opacity = dark ? 0.5 : 0.8;
+        glassMat.color.set(dark ? 0xffffff : 0x9fd8c0);
+        glassMat.opacity = dark ? 0.22 : 0.5;
+        bubbleMat.color.set(dark ? 0xffffff : 0x8fc9ee);
+        bubbleMat.opacity = dark ? 0.2 : 0.55;
+        edgeMat.color.set(dark ? 0xbfe6ff : 0x2c6a50);
+        edgeMat.opacity = dark ? 0.35 : 0.7;
+        liquidMat.opacity = dark ? 0.85 : 1;
+        liquidMat.color.set(dark ? 0x3af08a : 0x1fbf6a);
         liquidMat.emissive.set(dark ? 0x0d5a30 : 0x000000);
+        limeMat.color.set(dark ? 0x6bd13a : 0x3fae1f);
+        cherryMat.color.set(dark ? 0xe0263f : 0xc4162e);
+        orangeMat.color.set(dark ? 0xff9a1f : 0xf07a00);
+        mintMat.color.set(dark ? 0x2fbf5a : 0x1f9a44);
         if (reduced || !running) renderOnce();
       }
 
@@ -1286,19 +1718,48 @@
       }, { passive: true });
       document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
 
-      // Clique nos objetos 3D (só em áreas vazias da página)
-      const ray = new M.Raycaster();
-      const ndc = new M.Vector2();
-      addEventListener('pointerdown', (e) => {
-        const t = e.target;
-        const empty = t === document.body || t === root || t.classList.contains('app') || t.classList.contains('cards');
-        if (!empty) return;
-        ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-        ray.setFromCamera(ndc, camera);
-        const hits = ray.intersectObjects([glass, ...floaters.map(f => f.mesh)], true);
-        if (!hits.length) return;
-        let o = hits[0].object;
-        while (o.parent && !o.userData.kind) o = o.parent;
+      // Clique nos objetos 3D: acerto por proximidade na tela (área generosa, funciona por cima dos cards)
+      const hitRadius = { glass: 2.4, ice: 0.9, lime: 0.7, cherry: 0.6, bubble: 1, orange: 0.7, mint: 0.7, umbrella: 0.8, sparkle: 0.9 };
+      const wp = new M.Vector3();
+      const blocked = '.controls, .fab, .quiz, .modal, button, a';
+      function pickObject(cx, cy) {
+        if (!enabled) return null;
+        const pad = matchMedia('(pointer: coarse)').matches ? 26 : 14;
+        let best = null, bestGap = Infinity;
+        for (const o of [glass, ...floaters.map(f => f.mesh)]) {
+          o.getWorldPosition(wp);
+          const dist = wp.distanceTo(camera.position);
+          const pxPerUnit = innerHeight / (2 * Math.tan(M.MathUtils.degToRad(camera.fov / 2)) * dist);
+          wp.project(camera);
+          if (wp.z > 1) continue;
+          const sx = (wp.x + 1) / 2 * innerWidth;
+          const sy = (1 - wp.y) / 2 * innerHeight;
+          const r = hitRadius[o.userData.kind] * o.scale.x * pxPerUnit + pad;
+          const gap = Math.hypot(cx - sx, cy - sy) - r;
+          if (gap < 0 && gap < bestGap) { best = o; bestGap = gap; }
+        }
+        return best;
+      }
+
+      const overlayOpen = () => $('#modal').classList.contains('open') || $('#quiz').classList.contains('open');
+      let hoverQueued = false;
+      addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch' || hoverQueued) return;
+        hoverQueued = true;
+        const { clientX, clientY, target } = e;
+        requestAnimationFrame(() => {
+          hoverQueued = false;
+          const over = !overlayOpen() && !(target.closest && target.closest(blocked)) && !!pickObject(clientX, clientY);
+          document.body.classList.toggle('over-3d', over);
+        });
+      }, { passive: true });
+
+      addEventListener('click', (e) => {
+        if (e.detail === 0 || overlayOpen() || (e.target.closest && e.target.closest(blocked))) return;
+        const o = pickObject(e.clientX, e.clientY);
+        if (!o) return;
+        e.stopPropagation();
+        e.preventDefault();
         const kind = o.userData.kind;
 
         if (kind === 'glass') sfx.clink();
@@ -1318,7 +1779,7 @@
           gsap.fromTo(o.scale, { x: s * 1.6, y: s * 1.6, z: s * 1.6 }, { x: s, y: s, z: s, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
           gsap.to(o.rotation, { y: '+=6.283', duration: 1, ease: 'power3.out' });
         }
-      });
+      }, true);
 
       layout();
       setTheme(root.dataset.theme);
@@ -1331,7 +1792,14 @@
       }
       if (reduced) renderOnce(); else start();
 
-      return { setTheme };
+      function setEnabled(v) {
+        enabled = v;
+        if (!v) { stop(); return; }
+        layout();
+        if (reduced) renderOnce(); else start();
+      }
+
+      return { setTheme, setEnabled };
     }
 
     function loadScript(src) {
@@ -1344,13 +1812,18 @@
       });
     }
 
+    let booting = false;
     function boot3D() {
+      if (booting || scene3d || !sceneOn) return;
+      booting = true;
       loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
         .then(() => { scene3d = createScene(); })
-        .catch(() => { });
+        .catch(() => { })
+        .finally(() => { booting = false; });
     }
 
     const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 400));
+    addEventListener('load', () => idle(() => drinks.forEach((d) => { new Image().src = d.image; })));
     if (document.readyState === 'complete') idle(boot3D);
     else addEventListener('load', () => idle(boot3D));
   </script>

@@ -8,36 +8,92 @@
   <link rel="icon" href="https://cdn-icons-png.freepik.com/512/4067/4067084.png" type="image/png">
   <meta name="description"
     content="Cardápio digital de drinks com tema de TI para formatura, visual vibrante, moderno e interativo." />
+  <meta name="theme-color" content="#f7fff8" id="metaTheme" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
     rel="stylesheet" />
 
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) { }
+      if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+
   <style>
     :root {
+      color-scheme: light;
       --bg-1: #f7fff8;
       --bg-2: #f4fff7;
       --bg-3: #fffef6;
 
       --text: #153126;
       --muted: #567265;
+      --heading: #133326;
+      --strong: #17392d;
+      --accent: #0f8f47;
+      --label: #b78500;
+      --hint: #b77900;
+      --badge-text: #2c6a50;
+      --foot: #648172;
 
       --green: #11d66b;
-      --green-2: #3af08a;
       --yellow: #ffd84c;
-      --yellow-2: #ffe88a;
       --red: #ff6178;
-      --red-2: #ff8a9b;
 
-      --white: #ffffff;
       --glass: rgba(255, 255, 255, 0.74);
+      --surface: rgba(255, 255, 255, 0.84);
+      --surface-soft: rgba(255, 255, 255, 0.85);
       --line: rgba(20, 49, 38, 0.10);
       --shadow: 0 18px 50px rgba(38, 88, 61, 0.10);
+      --shadow-hover: 0 22px 56px rgba(38, 88, 61, 0.15);
+      --grid: rgba(21, 49, 38, 0.045);
+      --overlay: rgba(18, 40, 29, 0.26);
+      --modal-bg: rgba(255, 255, 255, 0.8);
+      --media-1: #f7fff8;
+      --media-2: #fffcf1;
+      --emoji-bg: linear-gradient(135deg, rgba(58, 240, 138, 0.22), rgba(255, 232, 138, 0.36), rgba(255, 138, 155, 0.28));
+      --base-bg: rgba(255, 216, 76, 0.35);
+      --base-text: #8a6200;
 
       --radius-xl: 30px;
       --radius-lg: 24px;
-      --radius-md: 18px;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg-1: #07120e;
+      --bg-2: #0a1813;
+      --bg-3: #0d1410;
+
+      --text: #e6f6ec;
+      --muted: #9db8aa;
+      --heading: #f1fff6;
+      --strong: #eafff1;
+      --accent: #3af08a;
+      --label: #ffd84c;
+      --hint: #ffd84c;
+      --badge-text: #8ff0b8;
+      --foot: #8aa698;
+
+      --glass: rgba(14, 28, 22, 0.62);
+      --surface: rgba(16, 32, 26, 0.78);
+      --surface-soft: rgba(255, 255, 255, 0.07);
+      --line: rgba(255, 255, 255, 0.10);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+      --shadow-hover: 0 22px 56px rgba(0, 0, 0, 0.6);
+      --grid: rgba(255, 255, 255, 0.04);
+      --overlay: rgba(0, 0, 0, 0.58);
+      --modal-bg: rgba(14, 26, 21, 0.9);
+      --media-1: #0c1a14;
+      --media-2: #121a12;
+      --emoji-bg: linear-gradient(135deg, rgba(58, 240, 138, 0.18), rgba(255, 216, 76, 0.16), rgba(255, 97, 120, 0.18));
+      --base-bg: rgba(255, 216, 76, 0.16);
+      --base-text: #ffd84c;
     }
 
     * {
@@ -53,7 +109,8 @@
       min-height: 100vh;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--text);
-      background:
+      background-color: var(--bg-1);
+      background-image:
         radial-gradient(circle at 10% 10%, rgba(17, 214, 107, 0.16), transparent 24%),
         radial-gradient(circle at 86% 12%, rgba(255, 216, 76, 0.20), transparent 28%),
         radial-gradient(circle at 50% 100%, rgba(255, 97, 120, 0.14), transparent 32%),
@@ -61,43 +118,102 @@
       overflow-x: hidden;
     }
 
-    .bg-layer,
-    .bg-layer::before {
+    :root[data-theme="dark"] body {
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(17, 214, 107, 0.14), transparent 30%),
+        radial-gradient(circle at 86% 12%, rgba(255, 216, 76, 0.08), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(255, 97, 120, 0.14), transparent 34%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-old(root) {
+      z-index: 1;
+    }
+
+    ::view-transition-new(root) {
+      z-index: 2;
+    }
+
+    .bg-layer {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-    }
-
-    .bg-layer {
       background-image:
-        linear-gradient(rgba(21, 49, 38, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(21, 49, 38, 0.045) 1px, transparent 1px);
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 38px 38px;
       opacity: 0.72;
       mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.92), transparent 96%);
     }
 
-    .bg-layer::before {
-      content: '';
-      background:
-        radial-gradient(circle at 16% 24%, rgba(17, 214, 107, 0.22) 0 3px, transparent 4px),
-        radial-gradient(circle at 74% 20%, rgba(255, 216, 76, 0.26) 0 3px, transparent 4px),
-        radial-gradient(circle at 42% 76%, rgba(255, 97, 120, 0.22) 0 3px, transparent 4px),
-        radial-gradient(circle at 88% 70%, rgba(17, 214, 107, 0.18) 0 2px, transparent 3px);
-      background-size: 220px 220px;
-      animation: floatParticles 18s linear infinite;
-      opacity: 0.85;
+    #scene {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease;
     }
 
-    @keyframes floatParticles {
-      from {
-        transform: translateY(0);
-      }
+    #scene.ready {
+      opacity: 1;
+    }
 
-      to {
-        transform: translateY(-80px);
-      }
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      z-index: 30;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+      transform: scaleX(0);
+      transform-origin: left;
+      pointer-events: none;
+    }
+
+    .controls {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 40;
+      display: flex;
+      gap: 8px;
+    }
+
+    .ctl {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .ctl:hover {
+      transform: scale(1.08);
+    }
+
+    .ctl:focus-visible,
+    .chip:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
     }
 
     .app {
@@ -124,23 +240,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(120deg,
-          rgba(17, 214, 107, 0.08),
-          rgba(255, 216, 76, 0.08),
-          rgba(255, 97, 120, 0.08));
-      pointer-events: none;
-    }
-
-    .topbar::after {
-      content: '';
-      position: absolute;
-      inset: auto -10% -40% auto;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(58, 240, 138, 0.18), transparent 68%);
-      filter: blur(8px);
+      background: linear-gradient(120deg, rgba(17, 214, 107, 0.08), rgba(255, 216, 76, 0.08), rgba(255, 97, 120, 0.08));
       pointer-events: none;
     }
 
@@ -152,7 +252,7 @@
       letter-spacing: 0.12em;
       font-size: 0.77rem;
       text-transform: uppercase;
-      color: #b78500;
+      color: var(--label);
     }
 
     h1 {
@@ -162,7 +262,7 @@
       font-size: clamp(1.55rem, 3.2vw, 2.5rem);
       line-height: 1.15;
       letter-spacing: -0.02em;
-      color: #133326;
+      color: var(--heading);
     }
 
     .subtitle {
@@ -173,19 +273,6 @@
       color: var(--muted);
       line-height: 1.65;
       font-size: 1rem;
-    }
-
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      z-index: 30;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
-      transform: scaleX(0);
-      transform-origin: left;
-      pointer-events: none;
     }
 
     .steps {
@@ -206,10 +293,10 @@
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.85);
+      background: var(--surface-soft);
       font-size: 0.88rem;
       font-weight: 600;
-      color: #2c6a50;
+      color: var(--badge-text);
     }
 
     .steps b {
@@ -241,8 +328,8 @@
 
     .chip {
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.9);
-      color: #2c6a50;
+      background: var(--surface);
+      color: var(--badge-text);
       border-radius: 999px;
       padding: 9px 16px;
       font: 700 0.9rem 'Inter', sans-serif;
@@ -252,11 +339,6 @@
 
     .chip:hover {
       border-color: rgba(17, 214, 107, 0.5);
-    }
-
-    .chip:focus-visible {
-      outline: 2px solid var(--green);
-      outline-offset: 2px;
     }
 
     .chip.active {
@@ -269,17 +351,13 @@
       margin-left: auto;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8rem;
-      color: #b77900;
+      color: var(--hint);
     }
 
     .cards {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
-    }
-
-    .drink-card[hidden] {
-      display: none;
     }
 
     .drink-card {
@@ -291,56 +369,39 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       padding: 18px;
-      background: rgba(255, 255, 255, 0.84);
+      background: var(--surface);
       box-shadow: var(--shadow);
       cursor: pointer;
       overflow: hidden;
-      transition:
-        transform 0.28s ease,
-        box-shadow 0.28s ease,
-        border-color 0.28s ease;
+      transition: box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    .drink-card[hidden] {
+      display: none;
     }
 
     .drink-card::before {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(90deg,
-          rgba(17, 214, 107, 0.07),
-          rgba(255, 216, 76, 0.08),
-          rgba(255, 97, 120, 0.07));
-      pointer-events: none;
-    }
-
-    .drink-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 28%, rgba(255, 255, 255, 0.45) 48%, transparent 68%);
-      transform: translateX(-130%);
-      opacity: 0;
+      background: linear-gradient(90deg, rgba(17, 214, 107, 0.07), rgba(255, 216, 76, 0.08), rgba(255, 97, 120, 0.07));
       pointer-events: none;
     }
 
     .drink-card:hover,
     .drink-card:focus-visible {
-      transform: translateY(-5px) scale(1.005);
-      box-shadow: 0 22px 56px rgba(38, 88, 61, 0.15);
-      border-color: rgba(17, 214, 107, 0.24);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(17, 214, 107, 0.3);
       outline: none;
     }
 
-    .drink-card:hover::after,
-    .drink-card:focus-visible::after {
-      opacity: 1;
-      animation: shimmer 1s linear;
+    html:not(.gsap-on) .drink-card {
+      transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.28s ease;
     }
 
-    @keyframes shimmer {
-      to {
-        transform: translateX(130%);
-      }
+    html:not(.gsap-on) .drink-card:hover,
+    html:not(.gsap-on) .drink-card:focus-visible {
+      transform: translateY(-5px);
     }
 
     .emoji {
@@ -350,15 +411,9 @@
       display: grid;
       place-items: center;
       font-size: 2.3rem;
-      background:
-        linear-gradient(135deg,
-          rgba(58, 240, 138, 0.22),
-          rgba(255, 232, 138, 0.36),
-          rgba(255, 138, 155, 0.28));
-      border: 1px solid rgba(20, 49, 38, 0.08);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.7),
-        0 10px 24px rgba(38, 88, 61, 0.08);
+      background: var(--emoji-bg);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
       position: relative;
       z-index: 1;
     }
@@ -375,18 +430,18 @@
       padding: 6px 11px;
       margin-bottom: 10px;
       border-radius: 999px;
-      border: 1px solid rgba(20, 49, 38, 0.08);
-      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
       font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
-      color: #2c6a50;
+      color: var(--badge-text);
     }
 
     .theme-name {
       margin: 0 0 5px;
       font-size: 1.04rem;
       font-family: 'JetBrains Mono', monospace;
-      color: #0f8f47;
+      color: var(--accent);
       letter-spacing: -0.01em;
     }
 
@@ -394,7 +449,7 @@
       margin: 0;
       font-size: 1.24rem;
       font-weight: 800;
-      color: #17392d;
+      color: var(--strong);
       letter-spacing: -0.015em;
     }
 
@@ -408,7 +463,7 @@
     .card-hint {
       margin-top: 10px;
       font-size: 0.78rem;
-      color: #b77900;
+      color: var(--hint);
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -418,7 +473,7 @@
       z-index: 20;
       display: grid;
       place-items: center;
-      background: rgba(18, 40, 29, 0.26);
+      background: var(--overlay);
       backdrop-filter: blur(12px);
       padding: 18px;
       opacity: 0;
@@ -432,17 +487,16 @@
     }
 
     .modal-card {
-      /* width: min(660px, calc(100vw - 30px)); */
-      /* garante folga nas laterais */
       max-width: 660px;
+      max-height: 92vh;
+      overflow: auto;
       display: grid;
       grid-template-columns: 1fr;
       position: relative;
-      overflow: hidden;
       border-radius: 28px;
-      border: 3px solid rgba(20, 49, 38, 0.08);
-      background: rgba(255, 255, 255, 0.69);
-      box-shadow: 0 30px 80px rgba(21, 49, 34, 0.2);
+      border: 3px solid var(--line);
+      background: var(--modal-bg);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
       transform: translateY(10px) scale(0.985);
       transition: transform 0.28s ease;
     }
@@ -453,11 +507,8 @@
 
     .modal-media {
       padding: 16px;
-      background:
-        linear-gradient(180deg,
-          rgba(247, 255, 248, 1),
-          rgba(255, 252, 241, 1));
-      border-bottom: 1px solid rgba(20, 49, 38, 0.07);
+      background: linear-gradient(180deg, var(--media-1), var(--media-2));
+      border-bottom: 1px solid var(--line);
     }
 
     .modal-image {
@@ -465,8 +516,8 @@
       height: 250px;
       object-fit: cover;
       border-radius: 20px;
-      border: 1px solid rgba(20, 49, 38, 0.07);
-      box-shadow: 0 10px 28px rgba(38, 88, 61, 0.08);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
     }
 
     .modal-content {
@@ -478,14 +529,14 @@
       font-size: 1.46rem;
       line-height: 1.2;
       font-family: 'JetBrains Mono', monospace;
-      color: #0f8f47;
+      color: var(--accent);
     }
 
     .modal-real {
       margin: 0;
       font-size: 1.26rem;
       font-weight: 800;
-      color: #17392d;
+      color: var(--strong);
       letter-spacing: -0.015em;
     }
 
@@ -494,8 +545,8 @@
       margin-top: 12px;
       padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(255, 216, 76, 0.35);
-      color: #8a6200;
+      background: var(--base-bg);
+      color: var(--base-text);
       font: 700 0.78rem 'JetBrains Mono', monospace;
     }
 
@@ -519,22 +570,34 @@
       right: 14px;
       top: 14px;
       z-index: 3;
-      border: 1px solid rgba(20, 49, 38, 0.10);
-      background: rgba(255, 255, 255, 0.94);
-      color: #17392d;
+      border: 1px solid var(--line);
+      background: var(--modal-bg);
+      color: var(--strong);
       border-radius: 12px;
       padding: 8px 12px;
       font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(38, 88, 61, 0.08);
     }
 
     .footer-note {
       margin-top: 24px;
       text-align: center;
       font-size: 0.92rem;
-      color: #648172;
+      line-height: 1.7;
+      color: var(--foot);
+    }
+
+    .ig-link {
+      color: var(--accent);
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 2px solid rgba(17, 214, 107, 0.35);
+      padding-bottom: 2px;
+    }
+
+    .ig-link:hover {
+      border-bottom-color: rgba(17, 214, 107, 0.8);
     }
 
     @media (min-width: 860px) {
@@ -544,7 +607,7 @@
 
       .modal-media {
         border-bottom: 0;
-        border-right: 1px solid rgba(20, 49, 38, 0.07);
+        border-right: 1px solid var(--line);
       }
 
       .modal-image {
@@ -556,6 +619,7 @@
     @media (max-width: 640px) {
       .app {
         width: min(94vw, 980px);
+        padding-top: 68px;
       }
 
       .topbar {
@@ -578,24 +642,18 @@
         padding: 20px;
       }
     }
-
-    .ig-link {
-      color: #0f8f47;
-      font-weight: 800;
-      text-decoration: none;
-      border-bottom: 2px solid rgba(17, 214, 107, 0.35);
-      padding-bottom: 2px;
-    }
-
-    .ig-link:hover {
-      border-bottom-color: rgba(17, 214, 107, 0.8);
-    }
   </style>
 </head>
 
 <body>
   <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="bg-layer" aria-hidden="true"></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <div class="controls">
+    <button class="ctl" id="soundBtn" type="button" aria-pressed="true" aria-label="Desligar sons">🔊</button>
+    <button class="ctl" id="themeBtn" type="button" aria-label="Alternar modo claro e escuro">🌙</button>
+  </div>
 
   <main class="app">
     <header class="topbar" id="topbar">
@@ -624,6 +682,7 @@
 
     <p class="footer-note">
       <!-- Criado por Arthur Arash Briceño Heidari -->
+      Dica: clique nos objetos 3D flutuando ao fundo 🧊🍒🍋<br />
       · Coquetelaro:
       <a class="ig-link" href="https://instagram.com/fabio_drinksdf" target="_blank" rel="noopener noreferrer">
         @fabio_drinksdf
@@ -655,8 +714,7 @@
   <script>
     const drinks = [
       {
-        emoji: '🍋',
-        bases: ['cachaça', 'vodca', 'rum'],
+        emoji: '🍋', bases: ['cachaça', 'vodca', 'rum'],
         codename: 'root.caipi()',
         realName: 'Caipirinha / Caipiroska / Daiquiri',
         shortText: 'Limão ou maracujá · gelo · versão clássica',
@@ -665,8 +723,7 @@
         image: 'https://mapadacachaca.com.br/wp-content/uploads/2024/11/Caipirinha-Famigerada-optimized.webp'
       },
       {
-        emoji: '🌿',
-        bases: ['rum'],
+        emoji: '🌿', bases: ['rum'],
         codename: 'mint.deploy()',
         realName: 'Mojito',
         shortText: 'Rum branco · hortelã · limão',
@@ -675,8 +732,7 @@
         image: 'https://kitchenswagger.com/wp-content/uploads/2020/07/mojito-recipe_0009_DSC_5509.jpg'
       },
       {
-        emoji: '💛',
-        bases: ['cachaça'],
+        emoji: '💛', bases: ['cachaça'],
         codename: 'passion.commit()',
         realName: 'Batida de Maracujá',
         shortText: 'Maracujá · cachaça · toque doce',
@@ -685,8 +741,7 @@
         image: 'https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_mobile/public/srh_recipes/cbe8fbdd5dd73dd09eb8912d4501b71d.jpeg?itok=vTPyFzy1'
       },
       {
-        emoji: '🍍',
-        bases: ['rum'],
+        emoji: '🍍', bases: ['rum'],
         codename: 'kernel.colada()',
         realName: 'Piña Colada',
         shortText: 'Abacaxi · coco · rum branco',
@@ -695,8 +750,7 @@
         image: 'https://m.media-amazon.com/images/I/710KvvfKVsL.jpg'
       },
       {
-        emoji: '🩷',
-        bases: ['vodca', 'rum'],
+        emoji: '🩷', bases: ['vodca', 'rum'],
         codename: 'pink.packet()',
         realName: 'Pink Lemon',
         shortText: 'Limão · grenadine · toque gaseificado',
@@ -705,8 +759,7 @@
         image: 'https://www.absolutdrinks.com/cdn-cgi/image/fit=cover,format=auto,height=414,quality=55,width=414/wp-content/uploads/drink_pink-lemonade_16x9.png'
       },
       {
-        emoji: '🍊',
-        bases: ['vodca'],
+        emoji: '🍊', bases: ['vodca'],
         codename: 'sunset.compile()',
         realName: 'Vodca com Suco de Laranja',
         shortText: 'Laranja · vodca · efeito sunset',
@@ -715,25 +768,86 @@
         image: 'https://heybairtender.s3.amazonaws.com/recipes/caribbean-sunset5543_TITAN.png'
       }
     ];
+    const $ = (sel) => document.querySelector(sel);
+    const root = document.documentElement;
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+    };
 
-    const cardsEl = document.getElementById('cards');
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalReal = document.getElementById('modalReal');
-    const modalImage = document.getElementById('modalImage');
-    const modalIngredients = document.getElementById('modalIngredients');
-    const modalDescription = document.getElementById('modalDescription');
-    const closeBtn = document.getElementById('closeBtn');
-    const modalBase = document.getElementById('modalBase');
-    const filtersEl = document.getElementById('filters');
-    const countEl = document.getElementById('count');
+    const cardsEl = $('#cards');
+    const modal = $('#modal');
+    const modalTitle = $('#modalTitle');
+    const modalReal = $('#modalReal');
+    const modalBase = $('#modalBase');
+    const modalImage = $('#modalImage');
+    const modalIngredients = $('#modalIngredients');
+    const modalDescription = $('#modalDescription');
+    const closeBtn = $('#closeBtn');
+    const filtersEl = $('#filters');
+    const countEl = $('#count');
+    const themeBtn = $('#themeBtn');
+    const soundBtn = $('#soundBtn');
+    const metaTheme = $('#metaTheme');
 
-    // GSAP só roda se carregou e se o usuário não pediu menos movimento
-    const motion = Boolean(window.gsap && window.ScrollTrigger) && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (motion) gsap.registerPlugin(ScrollTrigger);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = matchMedia('(hover: hover)').matches;
+    const motion = Boolean(window.gsap && window.ScrollTrigger) && !reduced;
+    if (motion) {
+      gsap.registerPlugin(ScrollTrigger);
+      root.classList.add('gsap-on');
+    }
 
+    let soundOn = store.get('sound') !== 'off';
+    let scene3d = null;
     let lastCard = null;
 
+    // ===== Tema claro / escuro =====
+    function updateThemeUI() {
+      const dark = root.dataset.theme === 'dark';
+      themeBtn.textContent = dark ? '☀️' : '🌙';
+      themeBtn.setAttribute('aria-label', dark ? 'Ativar modo claro' : 'Ativar modo escuro');
+      metaTheme.content = dark ? '#07120e' : '#f7fff8';
+    }
+
+    function setTheme(theme) {
+      root.dataset.theme = theme;
+      store.set('theme', theme);
+      updateThemeUI();
+      if (scene3d) scene3d.setTheme(theme);
+    }
+
+    function updateSoundUI() {
+      soundBtn.textContent = soundOn ? '🔊' : '🔇';
+      soundBtn.setAttribute('aria-pressed', String(soundOn));
+      soundBtn.setAttribute('aria-label', soundOn ? 'Desligar sons' : 'Ligar sons');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      sfx.theme(next);
+      if (!document.startViewTransition || reduced) {
+        setTheme(next);
+        return;
+      }
+      const r = themeBtn.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      const transition = document.startViewTransition(() => setTheme(next));
+      transition.ready.then(() => {
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 600, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' }
+        );
+      }).catch(() => { });
+      if (motion) gsap.fromTo(themeBtn, { rotation: -180 }, { rotation: 0, duration: 0.6, ease: 'back.out(1.7)' });
+    });
+
+    updateThemeUI();
+    updateSoundUI();
+
+    // ===== Modal =====
     function openModal(drink, card) {
       lastCard = card || null;
       modalTitle.textContent = drink.codename;
@@ -746,6 +860,7 @@
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       closeBtn.focus({ preventScroll: true });
+      sfx.open();
 
       if (motion) {
         const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -759,14 +874,24 @@
     function closeModal() {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
+      sfx.close();
       if (lastCard) lastCard.focus({ preventScroll: true });
     }
 
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    // ===== Cards =====
     drinks.forEach((drink, index) => {
       const card = document.createElement('article');
       card.className = 'drink-card';
       card.tabIndex = 0;
-
+      card.dataset.bases = drink.bases.join(',');
       card.innerHTML = `
         <div class="emoji">${drink.emoji}</div>
         <div class="card-main">
@@ -777,8 +902,6 @@
           <div class="card-hint">Clique para abrir os detalhes</div>
         </div>
       `;
-
-      card.dataset.bases = drink.bases.join(',');
       card.addEventListener('click', () => openModal(drink, card));
       card.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -786,13 +909,14 @@
           openModal(drink, card);
         }
       });
-
+      if (canHover) card.addEventListener('mouseenter', () => sfx.hover());
       cardsEl.appendChild(card);
     });
 
     const cardEls = [...cardsEl.children];
     countEl.textContent = `${cardEls.length} drinks`;
 
+    // ===== Filtro =====
     function applyFilter(base) {
       const match = card => base === 'todos' || card.dataset.bases.split(',').includes(base);
       const show = cardEls.filter(match);
@@ -821,19 +945,19 @@
       const chip = event.target.closest('.chip');
       if (!chip || chip.classList.contains('active')) return;
       filtersEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === chip));
+      sfx.tick();
       applyFilter(chip.dataset.base);
       if (motion) gsap.fromTo(chip, { scale: 0.92 }, { scale: 1, duration: 0.5, ease: 'back.out(3)' });
     });
 
+    // ===== Animações GSAP =====
     if (motion) {
-      // Entrada do topo
       gsap.timeline({ defaults: { ease: 'power3.out' } })
         .from('#topbar', { y: -30, opacity: 0, duration: 0.7 })
         .from('#topbar .label, #topbar h1, #topbar .subtitle', { y: 18, opacity: 0, stagger: 0.12, duration: 0.5 }, 0.2)
         .from('#topbar .steps li', { y: 14, opacity: 0, scale: 0.9, stagger: 0.1, duration: 0.45, ease: 'back.out(2)' }, 0.65)
         .from('#filters > *', { y: 14, opacity: 0, stagger: 0.06, duration: 0.4 }, 0.9);
 
-      // Cards aparecem conforme a rolagem
       gsap.set(cardEls, { opacity: 0, y: 40 });
       ScrollTrigger.batch(cardEls, {
         start: 'top 92%',
@@ -844,33 +968,391 @@
         })
       });
 
-      // Barra de progresso da página
       gsap.to('#progress', {
         scaleX: 1, ease: 'none',
         scrollTrigger: { start: 0, end: 'max', scrub: 0.3 }
       });
 
-      // Emoji "pula" ao passar o mouse no card
       cardEls.forEach(card => {
         const emoji = card.querySelector('.emoji');
         card.addEventListener('mouseenter', () => {
           gsap.fromTo(emoji, { rotation: -12, scale: 1 }, { rotation: 0, scale: 1.12, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
         });
         card.addEventListener('mouseleave', () => gsap.to(emoji, { scale: 1, duration: 0.25 }));
+
+        if (canHover) {
+          card.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            gsap.to(card, {
+              rotationY: px * 7, rotationX: -py * 7, y: -5,
+              transformPerspective: 900, duration: 0.4, ease: 'power2.out', overwrite: 'auto'
+            });
+          });
+          card.addEventListener('pointerleave', () => {
+            gsap.to(card, {
+              rotationX: 0, rotationY: 0, y: 0, duration: 0.5, ease: 'power3.out',
+              overwrite: 'auto', clearProps: 'transform'
+            });
+          });
+        }
+      });
+    }
+    // ===== Sons (Web Audio, sem arquivos) =====
+    let actx = null, master = null, lastHover = 0;
+
+    function audio() {
+      if (!soundOn) return null;
+      if (!actx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        actx = new AC();
+        master = actx.createGain();
+        master.gain.value = 0.22;
+        master.connect(actx.destination);
+      }
+      if (actx.state === 'suspended') actx.resume();
+      return actx;
+    }
+
+    function tone({ f = 440, to, d = 0.12, type = 'sine', v = 0.5, at = 0 }) {
+      const c = audio();
+      if (!c) return;
+      const t = c.currentTime + at;
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f, t);
+      if (to) o.frequency.exponentialRampToValueAtTime(to, t + d);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(v, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + d + 0.03);
+    }
+
+    const sfx = {
+      clink() {
+        tone({ f: 2093, d: 0.45, v: 0.35 });
+        tone({ f: 3136, d: 0.35, v: 0.2, at: 0.02 });
+        tone({ f: 4186, d: 0.25, v: 0.1, at: 0.03 });
+      },
+      open() {
+        tone({ f: 300, to: 700, d: 0.12, v: 0.3 });
+        tone({ f: 2093, d: 0.4, v: 0.25, at: 0.08 });
+        tone({ f: 3136, d: 0.3, v: 0.15, at: 0.1 });
+      },
+      close() { tone({ f: 520, to: 260, d: 0.16, v: 0.3 }); },
+      pop() { tone({ f: 520, to: 160, d: 0.14, v: 0.5 }); },
+      bubble() { tone({ f: 300, to: 900, d: 0.1, v: 0.4 }); },
+      tick() { tone({ f: 760, to: 520, d: 0.06, type: 'triangle', v: 0.35 }); },
+      hover() {
+        const now = performance.now();
+        if (now - lastHover < 90) return;
+        lastHover = now;
+        tone({ f: 1200, d: 0.04, v: 0.07 });
+      },
+      theme(next) {
+        const notes = next === 'light' ? [523, 659, 784] : [784, 659, 523];
+        notes.forEach((f, i) => tone({ f, d: 0.18, type: 'triangle', v: 0.3, at: i * 0.07 }));
+      }
+    };
+
+    soundBtn.addEventListener('click', () => {
+      soundOn = !soundOn;
+      store.set('sound', soundOn ? 'on' : 'off');
+      updateSoundUI();
+      if (soundOn) sfx.pop();
+    });
+    // ===== Cena 3D (Three.js, carregado depois do site) =====
+    function createScene() {
+      const canvas = $('#scene');
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
+      } catch (e) {
+        return null;
+      }
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+      renderer.setClearColor(0x000000, 0);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+      camera.position.z = 14;
+
+      const amb = new THREE.AmbientLight(0xffffff, 0.85);
+      const key = new THREE.DirectionalLight(0xffffff, 0.9);
+      key.position.set(4, 6, 8);
+      const greenLight = new THREE.PointLight(0x11d66b, 0.35, 40);
+      greenLight.position.set(-8, 2, 6);
+      const redLight = new THREE.PointLight(0xff6178, 0.35, 40);
+      redLight.position.set(8, -2, 6);
+      scene.add(amb, key, greenLight, redLight);
+
+      const M = THREE;
+      const glassMat = new M.MeshPhysicalMaterial({
+        color: 0xffffff, transparent: true, opacity: 0.3, roughness: 0.05, metalness: 0.1,
+        clearcoat: 1, clearcoatRoughness: 0.05, side: M.DoubleSide, depthWrite: false
+      });
+      const liquidMat = new M.MeshStandardMaterial({ color: 0x3af08a, transparent: true, opacity: 0.85, roughness: 0.25 });
+      const iceMat = new M.MeshPhysicalMaterial({ color: 0xcdeeff, transparent: true, opacity: 0.55, roughness: 0.1, clearcoat: 1 });
+      const limeMat = new M.MeshStandardMaterial({ color: 0x6bd13a, roughness: 0.5 });
+      const limeInMat = new M.MeshStandardMaterial({ color: 0xd7f58a, roughness: 0.6 });
+      const cherryMat = new M.MeshStandardMaterial({ color: 0xe0263f, roughness: 0.25, metalness: 0.1 });
+      const stemMat = new M.MeshStandardMaterial({ color: 0x5b3b1f, roughness: 0.8 });
+      const bubbleMat = new M.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.25, roughness: 0, clearcoat: 1 });
+      const strawMat = new M.MeshStandardMaterial({ color: 0xff6178, roughness: 0.4 });
+
+      // Taça de martini
+      const glass = new M.Group();
+      const profile = [[0, 0], [1.0, 0], [1.0, 0.08], [0.14, 0.16], [0.1, 0.3], [0.1, 2.3], [0.16, 2.4], [1.7, 4.0], [1.74, 4.05]]
+        .map(([x, y]) => new M.Vector2(x, y));
+      glass.add(new M.Mesh(new M.LatheGeometry(profile, 40), glassMat));
+      const liquidProfile = [[0.01, 2.55], [1.4, 3.8], [0.01, 3.8]].map(([x, y]) => new M.Vector2(x, y));
+      glass.add(new M.Mesh(new M.LatheGeometry(liquidProfile, 40), liquidMat));
+      const wheel = new M.Group();
+      wheel.add(new M.Mesh(new M.CylinderGeometry(0.7, 0.7, 0.1, 32), limeMat));
+      wheel.add(new M.Mesh(new M.CylinderGeometry(0.58, 0.58, 0.12, 32), limeInMat));
+      wheel.rotation.x = Math.PI / 2;
+      wheel.position.set(1.5, 4.1, 0);
+      glass.add(wheel);
+      const straw = new M.Mesh(new M.CylinderGeometry(0.06, 0.06, 2.4, 10), strawMat);
+      straw.position.set(0.4, 4.0, 0);
+      straw.rotation.z = -0.3;
+      glass.add(straw);
+      glass.children.forEach(c => { c.position.y -= 2.6; });
+      glass.userData = { kind: 'glass', spin: 0 };
+      scene.add(glass);
+
+      // Objetos flutuantes (geometrias compartilhadas = leve)
+      const boxGeo = new M.BoxGeometry(1, 1, 1);
+      const discGeo = new M.CylinderGeometry(0.55, 0.55, 0.08, 24);
+      const discInGeo = new M.CylinderGeometry(0.45, 0.45, 0.1, 24);
+      const ballGeo = new M.SphereGeometry(1, 20, 14);
+      const stemGeo = new M.CylinderGeometry(0.02, 0.02, 0.6, 6);
+
+      const makers = {
+        ice() { return new M.Mesh(boxGeo, iceMat); },
+        lime() {
+          const g = new M.Group();
+          g.add(new M.Mesh(discGeo, limeMat), new M.Mesh(discInGeo, limeInMat));
+          return g;
+        },
+        cherry() {
+          const g = new M.Group();
+          const b = new M.Mesh(ballGeo, cherryMat);
+          b.scale.setScalar(0.38);
+          const s = new M.Mesh(stemGeo, stemMat);
+          s.position.set(0.1, 0.55, 0);
+          s.rotation.z = -0.35;
+          g.add(b, s);
+          return g;
+        },
+        bubble() { return new M.Mesh(ballGeo, bubbleMat); }
+      };
+
+      const group = new M.Group();
+      scene.add(group);
+      const kinds = ['ice', 'lime', 'cherry', 'bubble'];
+      const count = innerWidth < 640 ? 8 : 14;
+      const floaters = [];
+      for (let i = 0; i < count; i++) {
+        const kind = kinds[i % kinds.length];
+        const mesh = makers[kind]();
+        const base = kind === 'bubble' ? 0.25 + Math.random() * 0.3 : 0.6 + Math.random() * 0.5;
+        mesh.userData.kind = kind;
+        mesh.userData.base = base;
+        mesh.scale.setScalar(base);
+        mesh.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
+        group.add(mesh);
+        floaters.push({
+          mesh, kind, base,
+          u: Math.random(), z: -4 + Math.random() * 5, jitter: Math.random() - 0.5,
+          rx: (Math.random() - 0.5) * 0.8, ry: (Math.random() - 0.5) * 0.8,
+          sp: 0.5 + Math.random() * 0.8, ph: Math.random() * 6.28,
+          x: 0, y: 0
+        });
+      }
+
+      let visW = 1, visH = 1, travel = 0, glassY = 0;
+      let scrollTarget = 0, scrollSmooth = 0;
+      let px = 0, py = 0, tx = 0, ty = 0;
+
+      function layout() {
+        const w = innerWidth, h = innerHeight, aspect = w / h;
+        camera.aspect = aspect;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+        visH = 2 * Math.tan(M.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+        visW = visH * aspect;
+
+        const appHalf = Math.min(490, w * 0.46);
+        const marginStart = Math.min(0.92, appHalf / (w / 2));
+        const lo = Math.min(0.78, marginStart);
+        const pages = Math.max(1, document.documentElement.scrollHeight / h);
+        travel = (pages - 1) * visH * 0.55;
+        const small = aspect < 0.8;
+
+        floaters.forEach((f, i) => {
+          const side = i % 2 ? 1 : -1;
+          f.x = side * (visW / 2) * (lo + f.u * (1.08 - lo));
+          f.y = visH * 0.5 - (i / floaters.length) * (visH + travel) - f.jitter * visH * 0.1;
+          f.mesh.position.set(f.x, f.y, f.z);
+          f.mesh.scale.setScalar(f.base * (small ? 0.8 : 1));
+        });
+
+        glass.scale.setScalar(small ? 0.5 : 0.75);
+        glass.position.x = marginStart < 0.8 ? (visW / 2) * ((marginStart + 1) / 2) : (visW / 2) * 0.78;
+        glassY = visH * 0.1;
+        glass.position.y = glassY;
+        scrollMetrics();
+      }
+
+      function scrollMetrics() {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        scrollTarget = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+      }
+
+      function update(dt, t) {
+        scrollSmooth += (scrollTarget - scrollSmooth) * Math.min(1, dt * 4);
+        group.position.y = scrollSmooth * travel;
+        px += (tx - px) * Math.min(1, dt * 3);
+        py += (ty - py) * Math.min(1, dt * 3);
+        camera.position.x = px * 0.7;
+        camera.position.y = -py * 0.5;
+        camera.lookAt(0, 0, 0);
+        for (const f of floaters) {
+          f.mesh.rotation.x += f.rx * dt;
+          f.mesh.rotation.y += f.ry * dt;
+          f.mesh.position.y = f.y + Math.sin(t * f.sp + f.ph) * 0.18;
+        }
+        glass.rotation.y = t * 0.45 + px * 0.6 + glass.userData.spin;
+        glass.rotation.x = py * 0.12;
+        glass.position.y = glassY + Math.sin(t * 0.9) * 0.12;
+      }
+
+      let raf = 0, running = false, last = 0;
+      function frame(now) {
+        raf = requestAnimationFrame(frame);
+        const dt = Math.min((now - last) / 1000, 0.05);
+        last = now;
+        update(dt, now / 1000);
+        renderer.render(scene, camera);
+      }
+      function start() {
+        if (running || reduced) return;
+        running = true;
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+      function stop() {
+        running = false;
+        cancelAnimationFrame(raf);
+      }
+      function renderOnce() {
+        update(0.016, 0);
+        renderer.render(scene, camera);
+      }
+
+      function setTheme(theme) {
+        const dark = theme === 'dark';
+        amb.color.set(dark ? 0x8fa3c8 : 0xffffff);
+        amb.intensity = dark ? 0.55 : 0.85;
+        key.color.set(dark ? 0xbfd8ff : 0xffffff);
+        key.intensity = dark ? 1.0 : 0.9;
+        greenLight.intensity = dark ? 1.3 : 0.35;
+        redLight.intensity = dark ? 1.3 : 0.35;
+        iceMat.color.set(dark ? 0x9fdcff : 0xcdeeff);
+        iceMat.opacity = dark ? 0.5 : 0.55;
+        glassMat.opacity = dark ? 0.22 : 0.3;
+        bubbleMat.opacity = dark ? 0.2 : 0.25;
+        liquidMat.emissive.set(dark ? 0x0d5a30 : 0x000000);
+        if (reduced || !running) renderOnce();
+      }
+
+      let resizeTimer = 0;
+      addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { layout(); if (reduced) renderOnce(); }, 120);
+      });
+      addEventListener('scroll', scrollMetrics, { passive: true });
+      addEventListener('pointermove', (e) => {
+        tx = (e.clientX / innerWidth) * 2 - 1;
+        ty = (e.clientY / innerHeight) * 2 - 1;
+      }, { passive: true });
+      document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+      // Clique nos objetos 3D (só em áreas vazias da página)
+      const ray = new M.Raycaster();
+      const ndc = new M.Vector2();
+      addEventListener('pointerdown', (e) => {
+        const t = e.target;
+        const empty = t === document.body || t === root || t.classList.contains('app') || t.classList.contains('cards');
+        if (!empty) return;
+        ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+        ray.setFromCamera(ndc, camera);
+        const hits = ray.intersectObjects([glass, ...floaters.map(f => f.mesh)], true);
+        if (!hits.length) return;
+        let o = hits[0].object;
+        while (o.parent && !o.userData.kind) o = o.parent;
+        const kind = o.userData.kind;
+
+        if (kind === 'glass') sfx.clink();
+        else if (kind === 'bubble') sfx.bubble();
+        else sfx.pop();
+        if (reduced || !window.gsap) return;
+
+        if (kind === 'glass') {
+          gsap.to(glass.userData, { spin: '+=6.283', duration: 1.2, ease: 'power3.out' });
+        } else if (kind === 'bubble') {
+          const s = o.userData.base;
+          gsap.timeline()
+            .to(o.scale, { x: 0, y: 0, z: 0, duration: 0.15, ease: 'power2.in' })
+            .to(o.scale, { x: s, y: s, z: s, duration: 0.9, ease: 'elastic.out(1, 0.5)' }, '+=1');
+        } else {
+          const s = o.scale.x;
+          gsap.fromTo(o.scale, { x: s * 1.6, y: s * 1.6, z: s * 1.6 }, { x: s, y: s, z: s, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
+          gsap.to(o.rotation, { y: '+=6.283', duration: 1, ease: 'power3.out' });
+        }
+      });
+
+      layout();
+      setTheme(root.dataset.theme);
+      canvas.classList.add('ready');
+      if (motion) {
+        gsap.from(glass.scale, { x: 0, y: 0, z: 0, duration: 1.4, ease: 'elastic.out(1, 0.6)', delay: 0.3 });
+        floaters.forEach((f, i) => {
+          gsap.from(f.mesh.scale, { x: 0, y: 0, z: 0, duration: 0.9, ease: 'back.out(2)', delay: 0.5 + i * 0.05 });
+        });
+      }
+      if (reduced) renderOnce(); else start();
+
+      return { setTheme };
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
       });
     }
 
-    closeBtn.addEventListener('click', closeModal);
+    function boot3D() {
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+        .then(() => { scene3d = createScene(); })
+        .catch(() => { });
+    }
 
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && modal.classList.contains('open')) {
-        closeModal();
-      }
-    });
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 400));
+    if (document.readyState === 'complete') idle(boot3D);
+    else addEventListener('load', () => idle(boot3D));
   </script>
 </body>
 

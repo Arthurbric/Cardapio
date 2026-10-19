@@ -62,8 +62,7 @@
     }
 
     .bg-layer,
-    .bg-layer::before,
-    .bg-layer::after {
+    .bg-layer::before {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -77,7 +76,6 @@
       background-size: 38px 38px;
       opacity: 0.72;
       mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.92), transparent 96%);
-      animation: gridPulse 7s ease-in-out infinite;
     }
 
     .bg-layer::before {
@@ -90,26 +88,6 @@
       background-size: 220px 220px;
       animation: floatParticles 18s linear infinite;
       opacity: 0.85;
-    }
-
-    .bg-layer::after {
-      content: '';
-      background: linear-gradient(120deg, transparent 18%, rgba(255, 255, 255, 0.55) 50%, transparent 82%);
-      transform: translateX(-130%);
-      animation: sweep 11s linear infinite;
-      opacity: 0.55;
-    }
-
-    @keyframes sweep {
-      to {
-        transform: translateX(130%);
-      }
-    }
-
-    @keyframes gridPulse {
-      50% {
-        opacity: 0.92;
-      }
     }
 
     @keyframes floatParticles {
@@ -197,10 +175,111 @@
       font-size: 1rem;
     }
 
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      z-index: 30;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+      transform: scaleX(0);
+      transform-origin: left;
+      pointer-events: none;
+    }
+
+    .steps {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #2c6a50;
+    }
+
+    .steps b {
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .filters-title {
+      margin: 0 6px 0 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.9);
+      color: #2c6a50;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font: 700 0.9rem 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .chip:hover {
+      border-color: rgba(17, 214, 107, 0.5);
+    }
+
+    .chip:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    .chip.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .count {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #b77900;
+    }
+
     .cards {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
+    }
+
+    .drink-card[hidden] {
+      display: none;
     }
 
     .drink-card {
@@ -410,6 +489,16 @@
       letter-spacing: -0.015em;
     }
 
+    .modal-base {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255, 216, 76, 0.35);
+      color: #8a6200;
+      font: 700 0.78rem 'JetBrains Mono', monospace;
+    }
+
     .modal-list {
       margin: 16px 0 0;
       padding-left: 20px;
@@ -505,16 +594,31 @@
 </head>
 
 <body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="bg-layer" aria-hidden="true"></div>
 
   <main class="app">
-    <header class="topbar">
+    <header class="topbar" id="topbar">
       <p class="label">drinks.menu() · Comemoração de Formatura 🎓</p>
       <h1>🍸 Cardápio de Bebidas Arthur Arash</h1>
       <p class="subtitle">
-        Clique em um drink para abrir os detalhes, ver a imagem e conferir os ingredientes completos.
+        Escolha um drink para ver a imagem e os ingredientes completos.
       </p>
+      <ol class="steps">
+        <li><b>1</b> Filtre pela bebida</li>
+        <li><b>2</b> Toque no drink</li>
+        <li><b>3</b> Veja os ingredientes</li>
+      </ol>
     </header>
+
+    <div class="filters" id="filters" role="group" aria-label="Filtrar por bebida base">
+      <p class="filters-title">filter(base):</p>
+      <button class="chip active" type="button" data-base="todos">Todos</button>
+      <button class="chip" type="button" data-base="cachaça">Cachaça</button>
+      <button class="chip" type="button" data-base="vodca">Vodca</button>
+      <button class="chip" type="button" data-base="rum">Rum</button>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
 
     <section class="cards" id="cards" aria-label="Cardápio de bebidas"></section>
 
@@ -539,16 +643,20 @@
         <p class="label">drink.details()</p>
         <h2 class="modal-title" id="modalTitle"></h2>
         <p class="modal-real" id="modalReal"></p>
+        <span class="modal-base" id="modalBase"></span>
         <ul class="modal-list" id="modalIngredients"></ul>
         <p class="modal-description" id="modalDescription"></p>
       </div>
     </article>
   </aside>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     const drinks = [
       {
         emoji: '🍋',
+        bases: ['cachaça', 'vodca', 'rum'],
         codename: 'root.caipi()',
         realName: 'Caipirinha / Caipiroska / Daiquiri',
         shortText: 'Limão ou maracujá · gelo · versão clássica',
@@ -558,6 +666,7 @@
       },
       {
         emoji: '🌿',
+        bases: ['rum'],
         codename: 'mint.deploy()',
         realName: 'Mojito',
         shortText: 'Rum branco · hortelã · limão',
@@ -567,6 +676,7 @@
       },
       {
         emoji: '💛',
+        bases: ['cachaça'],
         codename: 'passion.commit()',
         realName: 'Batida de Maracujá',
         shortText: 'Maracujá · cachaça · toque doce',
@@ -576,6 +686,7 @@
       },
       {
         emoji: '🍍',
+        bases: ['rum'],
         codename: 'kernel.colada()',
         realName: 'Piña Colada',
         shortText: 'Abacaxi · coco · rum branco',
@@ -585,6 +696,7 @@
       },
       {
         emoji: '🩷',
+        bases: ['vodca', 'rum'],
         codename: 'pink.packet()',
         realName: 'Pink Lemon',
         shortText: 'Limão · grenadine · toque gaseificado',
@@ -594,6 +706,7 @@
       },
       {
         emoji: '🍊',
+        bases: ['vodca'],
         codename: 'sunset.compile()',
         realName: 'Vodca com Suco de Laranja',
         shortText: 'Laranja · vodca · efeito sunset',
@@ -611,21 +724,42 @@
     const modalIngredients = document.getElementById('modalIngredients');
     const modalDescription = document.getElementById('modalDescription');
     const closeBtn = document.getElementById('closeBtn');
+    const modalBase = document.getElementById('modalBase');
+    const filtersEl = document.getElementById('filters');
+    const countEl = document.getElementById('count');
 
-    function openModal(drink) {
+    // GSAP só roda se carregou e se o usuário não pediu menos movimento
+    const motion = Boolean(window.gsap && window.ScrollTrigger) && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (motion) gsap.registerPlugin(ScrollTrigger);
+
+    let lastCard = null;
+
+    function openModal(drink, card) {
+      lastCard = card || null;
       modalTitle.textContent = drink.codename;
       modalReal.textContent = drink.realName;
+      modalBase.textContent = 'base: ' + drink.bases.join(' / ');
       modalImage.src = drink.image;
       modalImage.alt = `Imagem do drink ${drink.realName}`;
       modalIngredients.innerHTML = drink.ingredients.map(item => `<li>${item}</li>`).join('');
       modalDescription.textContent = drink.description;
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
+      closeBtn.focus({ preventScroll: true });
+
+      if (motion) {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.fromTo(modalImage, { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7 })
+          .from([modalTitle, modalReal, modalBase], { y: 16, opacity: 0, stagger: 0.07, duration: 0.45 }, 0.1)
+          .from(modalIngredients.children, { x: -18, opacity: 0, stagger: 0.06, duration: 0.4 }, 0.25)
+          .from(modalDescription, { y: 12, opacity: 0, duration: 0.4 }, '-=0.2');
+      }
     }
 
     function closeModal() {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
+      if (lastCard) lastCard.focus({ preventScroll: true });
     }
 
     drinks.forEach((drink, index) => {
@@ -644,16 +778,87 @@
         </div>
       `;
 
-      card.addEventListener('click', () => openModal(drink));
+      card.dataset.bases = drink.bases.join(',');
+      card.addEventListener('click', () => openModal(drink, card));
       card.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          openModal(drink);
+          openModal(drink, card);
         }
       });
 
       cardsEl.appendChild(card);
     });
+
+    const cardEls = [...cardsEl.children];
+    countEl.textContent = `${cardEls.length} drinks`;
+
+    function applyFilter(base) {
+      const match = card => base === 'todos' || card.dataset.bases.split(',').includes(base);
+      const show = cardEls.filter(match);
+      countEl.textContent = `${show.length} ${show.length === 1 ? 'drink' : 'drinks'}`;
+
+      if (!motion) {
+        cardEls.forEach(card => { card.hidden = !match(card); });
+        return;
+      }
+
+      gsap.killTweensOf(cardEls);
+      gsap.to(cardEls.filter(card => !card.hidden), {
+        opacity: 0, y: -10, duration: 0.18, ease: 'power1.in',
+        onComplete: () => {
+          cardEls.forEach(card => { card.hidden = !match(card); });
+          gsap.fromTo(show, { opacity: 0, y: 28 }, {
+            opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power3.out',
+            clearProps: 'transform,opacity',
+            onComplete: () => ScrollTrigger.refresh()
+          });
+        }
+      });
+    }
+
+    filtersEl.addEventListener('click', (event) => {
+      const chip = event.target.closest('.chip');
+      if (!chip || chip.classList.contains('active')) return;
+      filtersEl.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c === chip));
+      applyFilter(chip.dataset.base);
+      if (motion) gsap.fromTo(chip, { scale: 0.92 }, { scale: 1, duration: 0.5, ease: 'back.out(3)' });
+    });
+
+    if (motion) {
+      // Entrada do topo
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .from('#topbar', { y: -30, opacity: 0, duration: 0.7 })
+        .from('#topbar .label, #topbar h1, #topbar .subtitle', { y: 18, opacity: 0, stagger: 0.12, duration: 0.5 }, 0.2)
+        .from('#topbar .steps li', { y: 14, opacity: 0, scale: 0.9, stagger: 0.1, duration: 0.45, ease: 'back.out(2)' }, 0.65)
+        .from('#filters > *', { y: 14, opacity: 0, stagger: 0.06, duration: 0.4 }, 0.9);
+
+      // Cards aparecem conforme a rolagem
+      gsap.set(cardEls, { opacity: 0, y: 40 });
+      ScrollTrigger.batch(cardEls, {
+        start: 'top 92%',
+        once: true,
+        onEnter: batch => gsap.to(batch, {
+          opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+          clearProps: 'transform,opacity'
+        })
+      });
+
+      // Barra de progresso da página
+      gsap.to('#progress', {
+        scaleX: 1, ease: 'none',
+        scrollTrigger: { start: 0, end: 'max', scrub: 0.3 }
+      });
+
+      // Emoji "pula" ao passar o mouse no card
+      cardEls.forEach(card => {
+        const emoji = card.querySelector('.emoji');
+        card.addEventListener('mouseenter', () => {
+          gsap.fromTo(emoji, { rotation: -12, scale: 1 }, { rotation: 0, scale: 1.12, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+        });
+        card.addEventListener('mouseleave', () => gsap.to(emoji, { scale: 1, duration: 0.25 }));
+      });
+    }
 
     closeBtn.addEventListener('click', closeModal);
 

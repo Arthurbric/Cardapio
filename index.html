@@ -410,6 +410,45 @@
       transition: transform 0.2s ease;
     }
 
+    .controls-left {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 40;
+    }
+
+    .lab-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      padding: 0 16px;
+      gap: 8px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 560px) {
+      .lab-link {
+        width: 44px;
+        padding: 0;
+      }
+
+      .lab-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      main.app {
+        padding-top: 72px;
+      }
+    }
+
     .ctl:hover {
       transform: scale(1.08);
     }
@@ -853,6 +892,10 @@
   <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="bg-layer" aria-hidden="true"></div>
   <canvas id="scene" aria-hidden="true"></canvas>
+
+  <nav class="controls-left">
+    <a class="ctl lab-link" id="labLink" href="lab.html" aria-label="Abrir o Lab do Bartender: monte o seu drink">🧪 <span>Lab do Bartender</span></a>
+  </nav>
 
   <div class="controls">
     <button class="ctl" id="sceneBtn" type="button" aria-pressed="true" aria-label="Esconder objetos 3D">🧊</button>
